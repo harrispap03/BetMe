@@ -13,7 +13,7 @@ const routes: Routes = [
       },
       {
         path: 'home',
-        loadChildren: () => import('../pages/home/tab2.module').then(m => m.Tab2PageModule)
+        loadChildren: () => import('../pages/home/home.module').then(m => m.HomePageModule)
       },
       {
         path: 'user-profile',
