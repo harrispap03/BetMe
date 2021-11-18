@@ -1,0 +1,10 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>welcome</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content *ngIf="(auth.user$ | async) === (undefined || false || null)">
+  <ion-button (click)="takeAlook()">I just want to take a look</ion-button>
+  <ion-button (click)="signUp()">Get the full experience</ion-button>
+</ion-content>
