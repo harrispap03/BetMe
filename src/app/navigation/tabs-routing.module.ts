@@ -9,7 +9,7 @@ const routes: Routes = [
     children: [
       {
         path: 'bets',
-        loadChildren: () => import('../pages/bets/tab1.module').then(m => m.Tab1PageModule)
+        loadChildren: () => import('../pages/bets/bets.module').then(m => m.BetsPageModule)
       },
       {
         path: 'home',
@@ -21,14 +21,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'tab1',
+        redirectTo: 'Bets',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/tabs/Bets',
     pathMatch: 'full'
   }
 ];
