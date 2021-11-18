@@ -9,28 +9,35 @@ const routes: Routes = [
     children: [
       {
         path: 'bets',
-        loadChildren: () => import('../pages/bets/bets.module').then(m => m.BetsPageModule)
+        loadChildren: () =>
+          import('../pages/bets/bets.module').then((m) => m.BetsPageModule),
       },
       {
         path: 'home',
-        loadChildren: () => import('../pages/home/home.module').then(m => m.HomePageModule)
+        loadChildren: () =>
+          import('../pages/home/home.module').then((m) => m.HomePageModule),
       },
       {
         path: 'user-profile',
-        loadChildren: () => import('../pages/user-profile/userProfile.module').then(m => m.UserProfilePageModule)
+        loadChildren: () =>
+          import('../pages/user-profile/userProfile.module').then(
+            (m) => m.UserProfilePageModule
+          ),
+      },
+      {
+        path: 'welcome',
+        loadChildren: () =>
+          import('../pages/welcome/welcome.module').then(
+            (m) => m.WelcomePageModule
+          ),
       },
       {
         path: '',
-        redirectTo: 'Bets',
-        pathMatch: 'full'
-      }
-    ]
+        redirectTo: 'welcome',
+        pathMatch: 'full',
+      },
+    ],
   },
-  {
-    path: '',
-    redirectTo: '/tabs/Bets',
-    pathMatch: 'full'
-  }
 ];
 
 @NgModule({
