@@ -1,7 +1,0 @@
-{
-  "name": "BetMe",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "angular"
-}
