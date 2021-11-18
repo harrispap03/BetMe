@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserProfilePage } from './userProfile.page';
-import { ExploreContainerComponentModule } from '../../explore-container/explore-container.module';
 
 import { UserProfilePageRoutingModule } from './userProfile-routing.module';
 
@@ -13,10 +12,9 @@ import { UserProfilePageRoutingModule } from './userProfile-routing.module';
     IonicModule,
     CommonModule,
     FormsModule,
-    ExploreContainerComponentModule,
     RouterModule.forChild([{ path: '', component: UserProfilePage }]),
     UserProfilePageRoutingModule,
   ],
-  declarations: [UserProfilePage]
+  declarations: [UserProfilePage],
 })
 export class UserProfilePageModule {}
