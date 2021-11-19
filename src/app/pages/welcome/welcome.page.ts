@@ -9,10 +9,11 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class WelcomePage implements OnInit {
   constructor(public auth: AuthService, private router: Router) {
-    if(!this.auth.user$){
-      this.router.navigate(['bets']);
-      console.log('navigating');
-    }
+    this.auth.user$.subscribe((user) => {
+      if (user) {
+        this.router.navigate(['bets']);
+      }
+    }); // unsbuscribe
   }
 
   ngOnInit() {}
