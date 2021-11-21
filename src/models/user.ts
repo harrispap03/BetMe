@@ -1,13 +1,13 @@
 import { Bet } from './bet';
-
+import { FieldValue } from '@firebase/firestore';
 export interface User {
   id: string;
-  createdAt: Date;
+  displayName: string;
   email: string;
-  name: string;
-  surname: string;
+  photoURL: string;
+  createdAt: FieldValue;
   balance: number;
   activeBets: Bet[];
   pastBets: Bet[];
-  isHost: boolean;
+  canHostGames: boolean;
 }
