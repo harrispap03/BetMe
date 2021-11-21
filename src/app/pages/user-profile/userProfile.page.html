@@ -5,7 +5,10 @@
     <ion-button (click)="auth.signOut()">Log out</ion-button>
   </div>
 
-  <div class="center" *ngIf="(auth.user$ | async) === (undefined || false || null)">
+  <div
+    class="center"
+    *ngIf="(auth.user$ | async) === (undefined || false || null)"
+  >
     <ion-card-header
       >You need to be logged in to use this feature</ion-card-header
     >
