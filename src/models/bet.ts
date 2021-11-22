@@ -1,26 +1,26 @@
 import { User } from './user';
 
 export interface Bet {
-  id: string;
+  id?: string;
   description: string;
   createdBy: string;
   createdAt: Date;
-  endingAt: Date;
+  endingAt?: Date;
   settled: boolean;
   state: BetState;
 }
 export interface BetState {
   numberOfParticipants: number;
-  inFavor: InFavorBet;
-  against: AgainstBet;
+  optionOneName: InFavorBet;
+  optionTwoName: AgainstBet;
 }
 
 export interface InFavorBet {
-  inFavorAmount: number;
-  inFavor: User['id'][];
+  optionOneSupportersAmount: number;
+  optionOneSupporters: User['id'][];
 }
 
 export interface AgainstBet {
-  againstAmount: number;
-  against: User['id'][];
+  optionTwoSupportersAmount: number;
+  optionTwoSupporters: User['id'][];
 }

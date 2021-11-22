@@ -29,7 +29,6 @@ export class AuthService {
       switchMap((user) => {
         // Logged in
         if (user) {
-          console.log('user is: ', user);
           // Implement: check if the doc is in firestore if not create it
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
         } else {

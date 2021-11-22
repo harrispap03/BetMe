@@ -9,6 +9,10 @@ const routes: Routes = [
   {
     path: 'welcome',
     loadChildren: () => import('./pages/welcome/welcome.module').then( m => m.WelcomePageModule)
+  },
+  {
+    path: 'new-bet',
+    loadChildren: () => import('./components/new-bet/new-bet.module').then( m => m.NewBetPageModule)
   }
 ];
 @NgModule({
