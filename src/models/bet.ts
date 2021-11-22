@@ -3,7 +3,8 @@ import { User } from './user';
 export interface Bet {
   id?: string;
   description: string;
-  createdBy: string;
+  creator: string;
+  creatorProfilePicURL: string;
   createdAt: Date;
   endingAt?: Date;
   settled: boolean;

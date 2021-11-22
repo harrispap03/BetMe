@@ -11,19 +11,27 @@ import firebase from 'firebase/compat/app';
   styleUrls: ['./new-bet.page.scss'],
 })
 export class NewBetPage implements OnInit {
+  user;
   myForm: FormGroup;
   loading = false;
   success = false;
   constructor(
     private modalController: ModalController,
     private fb: FormBuilder,
-    private afs: AngularFirestore
-  ) {}
+    private afs: AngularFirestore,
+    private authService: AuthService
+  ) {
+    this.authService.user$.subscribe((user) => {
+      this.user = user;
+      console.log(this.user);
+    });
+  }
 
   ngOnInit() {
     this.myForm = this.fb.group({
       description: '',
-      createdBy: '',
+      creator: '',
+      creatorProfilePicURL: '',
       createdAt: '',
       optionOneName: '',
       optionTwoName: '',
@@ -51,6 +59,14 @@ export class NewBetPage implements OnInit {
 
     this.myForm.patchValue({
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    this.myForm.patchValue({
+      creator: this.user.displayName,
+    });
+
+    this.myForm.patchValue({
+      creatorProfilePicURL: this.user.photoURL,
     });
 
     const formValue = this.myForm.value;
