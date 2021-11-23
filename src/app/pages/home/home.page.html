@@ -5,14 +5,30 @@
   </ion-button>
 
   <ion-list *ngFor="let bet of betService.data | async">
-    {{bet.description}}
-    <!-- Will add more info here in the future -->
+    <ion-card>
+      <ion-card-header>
+        <ion-chip>
+          <ion-avatar>
+            <img [src]="bet.creatorProfilePicURL" />
+          </ion-avatar>
+          <ion-label>{{bet.creator}}</ion-label>
+        </ion-chip>
+      </ion-card-header>
+      <ion-card-content>
+        {{bet.description}}
+        <div class="buttons">
+          <ion-button> {{bet.optionOneName}} </ion-button>
+          <ion-button> {{bet.optionTwoName}} </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
   </ion-list>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more data...">
+      loadingText="Loading more data..."
+    >
       <p *ngIf="betService.done | async">These are all the bets!</p>
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

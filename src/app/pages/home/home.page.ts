@@ -1,16 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonInfiniteScroll, ModalController } from '@ionic/angular';
+import { take } from 'rxjs/operators';
 import { NewBetPage } from 'src/app/components/new-bet/new-bet.page';
 import { BetService } from 'src/app/services/bet.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss']
+  styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit{
+export class HomePage implements OnInit {
+  @ViewChild(IonInfiniteScroll) inifiniteScroll: IonInfiniteScroll;
 
-@ViewChild(IonInfiniteScroll) inifiniteScroll: IonInfiniteScroll;
   constructor(
     public modalController: ModalController,
     public betService: BetService
@@ -40,5 +41,4 @@ export class HomePage implements OnInit{
     this.inifiniteScroll.disabled = !this.inifiniteScroll.disabled;
     console.log('Toggled');
   }
-
 }
