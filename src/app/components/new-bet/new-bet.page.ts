@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import firebase from 'firebase/compat/app';
+import { merge } from 'rxjs';
 
 @Component({
   selector: 'app-new-bet',
@@ -28,6 +29,7 @@ export class NewBetPage implements OnInit {
 
   ngOnInit() {
     this.myForm = this.fb.group({
+      id: '',
       description: '',
       creator: '',
       creatorProfilePicURL: '',
@@ -54,6 +56,8 @@ export class NewBetPage implements OnInit {
   }
 
   async submitHandler() {
+    const betDocumentRef = this.afs.collection('bets').doc();
+
     this.loading = true;
 
     this.myForm.patchValue({
@@ -71,7 +75,17 @@ export class NewBetPage implements OnInit {
     const formValue = this.myForm.value;
 
     try {
-      await this.afs.collection('bets').add(formValue);
+      await this.afs
+        .collection('bets')
+        .add(formValue)
+        .then((document) => {
+          this.afs.collection('bets').doc(document.id).set(
+            {
+              id: document.id,
+            },
+            { merge: true }
+          );
+        });
       this.success = true;
     } catch (err) {
       console.log(err);
