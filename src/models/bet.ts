@@ -1,7 +1,7 @@
 import { User } from './user';
 
 export interface Bet {
-  id?: string;
+  id: string;
   description: string;
   creator: string;
   creatorProfilePicURL: string;
@@ -12,16 +12,16 @@ export interface Bet {
 }
 export interface BetState {
   numberOfParticipants: number;
-  optionOneName: InFavorBet;
-  optionTwoName: AgainstBet;
+  optionOne: InFavorBet;
+  optionTwo: AgainstBet;
 }
 
 export interface InFavorBet {
   optionOneSupportersAmount: number;
-  optionOneSupporters: User['id'][];
+  optionOneSupporters: any;
 }
 
 export interface AgainstBet {
   optionTwoSupportersAmount: number;
-  optionTwoSupporters: User['id'][];
+  optionTwoSupporters: any;
 }
