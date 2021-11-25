@@ -13,7 +13,11 @@ const routes: Routes = [
   {
     path: 'new-bet',
     loadChildren: () => import('./components/new-bet/new-bet.module').then( m => m.NewBetPageModule)
+  },  {
+    path: 'confirm-bet',
+    loadChildren: () => import('./components/confirm-bet/confirm-bet.module').then( m => m.ConfirmBetPageModule)
   }
+
 ];
 @NgModule({
   imports: [

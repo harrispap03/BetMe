@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonInfiniteScroll, ModalController } from '@ionic/angular';
-import { take } from 'rxjs/operators';
+import { ConfirmBetPage } from 'src/app/components/confirm-bet/confirm-bet.page';
 import { NewBetPage } from 'src/app/components/new-bet/new-bet.page';
 import { BetService } from 'src/app/services/bet.service';
+import { Bet } from 'src/models/bet';
 
 @Component({
   selector: 'app-home',
@@ -23,9 +24,21 @@ export class HomePage implements OnInit {
       prepend: false,
     });
   }
-  async popup() {
+  async addNewBetPopup() {
     const modal = await this.modalController.create({
       component: NewBetPage,
+    });
+    return await modal.present();
+  }
+
+  async onBetChoiceMade(selectedBet: Bet, betChoice: any, option: number) {
+    const modal = await this.modalController.create({
+      component: ConfirmBetPage,
+      componentProps: {
+        selectedBet,
+        betChoice,
+        option
+      },
     });
     return await modal.present();
   }

@@ -40,12 +40,17 @@ export class NewBetPage implements OnInit {
       state: {
         numberOfParticipants: 0,
         optionOne: {
-          optionOneSupportersAmount: 0,
-          optionOneSupporters: [],
+          supportersAmount: 0,
+          supporters: [],
         },
         optionTwo: {
-          optionTwoSupportersAmount: 0,
-          optionTwoSupporters: [],
+          supportersAmount: 0,
+          supporters: {
+            betMade: {
+              userId: '',
+              amount: 0,
+            },
+          },
         },
       },
     });

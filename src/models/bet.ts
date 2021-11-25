@@ -18,7 +18,7 @@ export interface BetState {
 
 export interface InFavorBet {
   supportersAmount: number;
-  supporters: BetMade;
+  supporters: BetMade[];
 }
 
 export interface AgainstBet {

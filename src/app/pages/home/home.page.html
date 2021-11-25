@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-button (click)="popup()">Add new bet</ion-button>
+  <ion-button (click)="addNewBetPopup()">Add new bet</ion-button>
   <ion-button (click)="toggleInfiniteScroll()" expand="block">
     Toggle Infinite Scroll
   </ion-button>
@@ -17,8 +17,12 @@
       <ion-card-content>
         {{bet.description}}
         <div class="buttons">
-          <ion-button> {{bet.optionOneName}} </ion-button>
-          <ion-button> {{bet.optionTwoName}} </ion-button>
+          <ion-button (click)="onBetChoiceMade(bet, bet.optionOneName, 1)">
+            {{bet.optionOneName}}
+          </ion-button>
+          <ion-button (click)="onBetChoiceMade(bet, bet.optionTwoName, 2)">
+            {{bet.optionTwoName}}
+          </ion-button>
         </div>
       </ion-card-content>
     </ion-card>

@@ -8,6 +8,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { scan, take, tap } from 'rxjs/operators';
 import { Bet } from 'src/models/bet';
 import { QueryConfig } from 'src/models/QueryConfig';
+import { User } from 'src/models/user';
+import firestore from 'firebase/compat/app';
 @Injectable({
   providedIn: 'root',
 })
@@ -24,6 +26,60 @@ export class BetService {
 
   constructor(private afs: AngularFirestore) {}
 
+  async executeBetTransaction(
+    user: User,
+    bet: Bet,
+    amount: number,
+    option: number
+  ) {
+    let betData;
+    const alreadyExistingBets = bet.state.optionOne.supporters; // needs refresh to work
+    if (user.balance < amount) {
+      console.log('not enough money');
+      return;
+    }
+    console.log('bett', user.activeBets, bet.id);
+    for (let alreadyActiveBet of user.activeBets) {
+      if (alreadyActiveBet === bet.id) {
+        console.log('sorry you cant bet twice');
+        return;
+      }
+    }
+
+    if (option === 1) {
+      betData = {
+        state: {
+          numberOfParticipants: (bet.state.numberOfParticipants += 1),
+          optionOne: {
+            supporters: [
+              ...alreadyExistingBets,
+              { userId: user.id, amount: amount },
+            ],
+          },
+        },
+      };
+    } else {
+      betData = {
+        state: {
+          numberOfParticipants: (bet.state.numberOfParticipants += 1),
+          optionTwo: {
+            supporters: [
+              ...alreadyExistingBets,
+              { userId: user.id, amount: amount },
+            ],
+          },
+        },
+      };
+    }
+
+    const userData = {
+      balance: user.balance - amount,
+      activeBets: [...user.activeBets, bet.id],
+    };
+    this.afs.collection('bets').doc(bet.id).set(betData, { merge: true });
+    this.afs.collection('users').doc(user.id).set(userData, { merge: true });
+  }
+
   init(path: string, field: string, opts?: any) {
     this.query = {
       path,
@@ -35,7 +91,9 @@ export class BetService {
     };
 
     const first = this.afs.collection(this.query.path, (ref) => {
-      return ref.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc').limit(this.query.limit);
+      return ref
+        .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+        .limit(this.query.limit);
     });
 
     this.mapAndUpdate(first);
