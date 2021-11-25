@@ -7,7 +7,7 @@ export interface User {
   photoURL: string;
   createdAt: FieldValue;
   balance: number;
-  activeBets: Bet[];
+  activeBets: string[];
   pastBets: Bet[];
   canHostGames: boolean;
 }
