@@ -17,11 +17,16 @@ export interface BetState {
 }
 
 export interface InFavorBet {
-  optionOneSupportersAmount: number;
-  optionOneSupporters: any;
+  supportersAmount: number;
+  supporters: BetMade;
 }
 
 export interface AgainstBet {
-  optionTwoSupportersAmount: number;
-  optionTwoSupporters: any;
+  supportersAmount: number;
+  supporters: BetMade;
+}
+
+export interface BetMade {
+  userId: string;
+  amount: number;
 }
