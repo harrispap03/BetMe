@@ -32,6 +32,7 @@ export class NewBetPage implements OnInit {
       id: '',
       description: '',
       creator: '',
+      creatorId: '',
       creatorProfilePicURL: '',
       createdAt: '',
       optionOneName: '',
@@ -67,6 +68,10 @@ export class NewBetPage implements OnInit {
 
     this.myForm.patchValue({
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    this.myForm.patchValue({
+      creatorId: this.user.id,
     });
 
     this.myForm.patchValue({
