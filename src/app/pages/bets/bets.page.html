@@ -1,3 +1,57 @@
 <ion-content>
-  <h3>Bets page here</h3>
+  <ion-button (click)="test()">Log</ion-button>
+  <h3>Your bets</h3>
+  <ion-segment (ionChange)="segmentChanged($event)" value="participating">
+    <ion-segment-button value="participating">
+      <ion-label>Participating</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="created">
+      <ion-label>Created</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="inParticipatingSegment && betsCreatedByUser">
+    <h3>Participating in this that and whatever</h3>
+    <div *ngFor="let preparedBet of preparedBets">
+      <!-- <div *ngFor="let activeBet of userActiveBets"> -->
+      <ion-card>
+        <ion-card-header>
+          <ion-chip>
+            <ion-avatar>
+              <img [src]="preparedBet.bet.creatorProfilePicURL" />
+            </ion-avatar>
+            <ion-label>{{preparedBet.bet.creator}}</ion-label>
+          </ion-chip>
+        </ion-card-header>
+        <ion-card-content>
+          {{preparedBet.bet.description}}
+          <h3>You bet on:</h3>
+          <ion-button>{{preparedBet.userBet.choiceName}} </ion-button>
+        </ion-card-content>
+      </ion-card>
+      <!-- </div> -->
+    </div>
+  </div>
+
+  <div *ngIf="!inParticipatingSegment">
+    <div *ngIf="betsCreatedByUser">
+      <div *ngFor="let bet of betsCreatedByUser">
+        <ion-card>
+          <ion-card-header>
+            <ion-chip>
+              <ion-avatar>
+                <img [src]="bet.creatorProfilePicURL" />
+              </ion-avatar>
+              <ion-label>{{bet.creator}}</ion-label>
+            </ion-chip>
+          </ion-card-header>
+          <ion-card-content>
+            {{bet.description}}
+            <h3>You betted on:</h3>
+            <ion-button></ion-button>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+  </div>
 </ion-content>

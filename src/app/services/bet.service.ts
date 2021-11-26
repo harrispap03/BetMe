@@ -26,11 +26,35 @@ export class BetService {
 
   constructor(private afs: AngularFirestore) {}
 
+  getBetsCreatedByUser(userId) {
+    let betsCreatedByUser = this.afs
+      .collection('bets', (ref) => ref.where('creatorId', '==', userId))
+      .valueChanges();
+    return betsCreatedByUser;
+  }
+
+  getBetsUserParticipatesIn(activeBets): Bet[] {
+    let userBets = [];
+    for (let betObj of activeBets) {
+      let docId = betObj.betId;
+      this.afs
+        .collection('bets')
+        .doc(docId)
+        .valueChanges()
+        .pipe(take(1))
+        .subscribe((bet) => {
+          userBets.push(bet);
+        });
+    }
+    return userBets;
+  }
+
   async executeBetTransaction(
     user: User,
     bet: Bet,
     amount: number,
-    option: number
+    option: number,
+    choiceName: string,
   ) {
     let betData;
     const alreadyExistingBets = bet.state.optionOne.supporters; // needs refresh to work
@@ -53,7 +77,7 @@ export class BetService {
           optionOne: {
             supporters: [
               ...alreadyExistingBets,
-              { userId: user.id, amount: amount },
+              { userId: user.id, amount: amount, choice: option },
             ],
           },
         },
@@ -65,7 +89,7 @@ export class BetService {
           optionTwo: {
             supporters: [
               ...alreadyExistingBets,
-              { userId: user.id, amount: amount },
+              { userId: user.id, amount: amount, choice: option },
             ],
           },
         },
@@ -74,7 +98,10 @@ export class BetService {
 
     const userData = {
       balance: user.balance - amount,
-      activeBets: [...user.activeBets, bet.id],
+      activeBets: [
+        ...user.activeBets,
+        { betId: bet.id, amount: amount, choice: option, choiceName: choiceName },
+      ],
     };
     this.afs.collection('bets').doc(bet.id).set(betData, { merge: true });
     this.afs.collection('users').doc(user.id).set(userData, { merge: true });
