@@ -40,7 +40,8 @@ export class ConfirmBetPage implements OnInit {
       this.user,
       this.selectedBet,
       this.betAmount,
-      this.option
+      this.option,
+      this.betChoice
     );
   }
 }
