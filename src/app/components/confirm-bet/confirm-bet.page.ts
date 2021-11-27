@@ -14,7 +14,7 @@ export class ConfirmBetPage implements OnInit {
   @Input() option: number;
   @Input() selectedBet: Bet; // comes from home
   @Input() betChoice: string; // comes from home
-  @ViewChild('betAmount') betAmount: number; // this component
+  @ViewChild('betAmountString') betAmountString: string; // this component
 
   // All those set from the service
   user: User;
@@ -36,12 +36,14 @@ export class ConfirmBetPage implements OnInit {
   }
 
   async onConfirmBet() {
+    const betAmount = +this.betAmountString;
     this.betService.executeBetTransaction(
       this.user,
       this.selectedBet,
-      this.betAmount,
+      betAmount,
       this.option,
       this.betChoice
     );
+    console.log('type is', typeof betAmount);
   }
 }

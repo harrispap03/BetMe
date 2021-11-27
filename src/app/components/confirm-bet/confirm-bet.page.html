@@ -14,7 +14,7 @@
     <ion-card-content>
       <h1>You're betting on:</h1>
       <ion-button>{{betChoice}}</ion-button>
-      <ion-input [(ngModel)]="betAmount" placeholder="Enter amount"
+      <ion-input [(ngModel)]="betAmountString" placeholder="Enter amount"
         >AMOUNT</ion-input
       >
       <ion-button (click)="onConfirmBet()">Confrim</ion-button>

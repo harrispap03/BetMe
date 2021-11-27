@@ -40,6 +40,7 @@ export class NewBetPage implements OnInit {
       settled: false,
       state: {
         numberOfParticipants: 0,
+        totalBettingAmount: 0,
         optionOne: {
           supportersAmount: 0,
           supporters: [],
