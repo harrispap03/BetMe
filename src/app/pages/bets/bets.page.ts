@@ -21,7 +21,7 @@ export class BetsPage {
   betsUserParticipatesIn = [];
   userActiveBets;
   preparedBets;
-  // other stuff
+
   constructor(
     private authService: AuthService,
     private betService: BetService
@@ -31,12 +31,11 @@ export class BetsPage {
       this.betsUserParticipatesIn = this.betService.getBetsUserParticipatesIn(
         user.activeBets
       );
-      this.betService
-        .getBetsCreatedByUser(user.id)
-        .subscribe((val) => (this.betsCreatedByUser = val));
+      this.betService.getBetsCreatedByUser(user.id).subscribe((val) => {
+        this.betsCreatedByUser = val;
+        this.fillIn();
+      });
     });
-    this.fillIn();
-    // console.log('anotheone');
   }
   fillIn() {
     this.preparedBets = this.betsUserParticipatesIn.map((bet) => ({
