@@ -4,12 +4,13 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { scan, take, tap } from 'rxjs/operators';
 import { Bet } from 'src/models/bet';
 import { QueryConfig } from 'src/models/QueryConfig';
 import { User } from 'src/models/user';
 import firestore from 'firebase/compat/app';
+import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -49,14 +50,131 @@ export class BetService {
     return userBets;
   }
 
+  totalBettingAmount;
+  optionOneSupporters;
+  optionTwoSupporters;
+  settleBet(betWinner, betId) {
+    let bet;
+    let winners;
+    let bonusEarnings = 0;
+    // get bet with id
+    this.afs
+      .collection('bets')
+      .doc(betId)
+      .valueChanges()
+      .pipe(take(1))
+      .subscribe((bet: any) => {
+        this.totalBettingAmount = bet.state.totalBettingAmount;
+        //figure out the winners
+        if (betWinner === 1) {
+          winners = bet.state.optionOne.supporters;
+        } else if (betWinner === 2) {
+          winners = bet.state.optionTwo.supporters;
+        }
+
+        //figure out their base payout
+        let winnerMoneyBack = [];
+        let winnerEarnings = [];
+        let winnerTotalEarnings = [];
+        for (let winner of winners) {
+          let moneyBackForCurrentWinner = winner.amount;
+          winnerMoneyBack.push(moneyBackForCurrentWinner);
+          this.totalBettingAmount =
+            this.totalBettingAmount - moneyBackForCurrentWinner;
+        }
+        console.log('money back array', winnerMoneyBack);
+        console.log('total betting amount', this.totalBettingAmount);
+
+        // figure out their bonus payout
+
+        // Ιf there was none on the other side, there wont be a bonus
+        if (this.totalBettingAmount === 0) {
+          for (let winner of winners) {
+            console.log('nothing more to give out: ', this.totalBettingAmount);
+            console.log('They put in: ', winner.amount);
+            winnerEarnings.push(0);
+          }
+        } else if (this.totalBettingAmount !== 0) {
+          for (let winner of winners) {
+            console.log('They put in: ', winner.amount);
+            bonusEarnings = (winner.amount / this.totalBettingAmount) * 100;
+            this.totalBettingAmount = this.totalBettingAmount - bonusEarnings;
+            winnerEarnings.push(bonusEarnings);
+            console.log('bonus earnings are: ', bonusEarnings);
+            console.log('total betting amount', this.totalBettingAmount);
+          }
+        } else {
+          console.log('Major problem!!!');
+        }
+
+        // sum them up
+        for (let i in winnerMoneyBack) {
+          for (let j in winnerEarnings) {
+            winnerTotalEarnings.push(winnerMoneyBack[i] + winnerEarnings[j]);
+          }
+        }
+        //pay the winners
+        for (let winner of winners) {
+          for (let i = 0; i < 1; i++) {
+            this.afs
+              .collection('users')
+              .doc(winner.userId)
+              .valueChanges()
+              .pipe(take(1))
+              .subscribe((user: any) => {
+                this.afs
+                  .collection('users')
+                  .doc(winner.userId)
+                  .set(
+                    { balance: user.balance + winnerTotalEarnings[i] },
+                    { merge: true }
+                  );
+                console.log('winner balance right now: ', winner.userId, user);
+                console.log('winner gets', winnerTotalEarnings[i]);
+              });
+          }
+        }
+
+        console.log('remaining', this.totalBettingAmount);
+        //pay the host and the app
+        let hostPayout = this.totalBettingAmount * 0.7;
+        let appPayout = this.totalBettingAmount * 0.3;
+        console.log('host', hostPayout);
+        console.log('app', appPayout);
+        this.afs
+          .collection('users')
+          .doc(bet.creatorId)
+          .set({ balance: hostPayout }, { merge: true });
+
+        this.afs
+          .collection('app')
+          .doc()
+          .set({ balance: appPayout }, { merge: true });
+
+        // this.afs.collection('bet').doc(betId).set({settled:true, results:}, {merge: true});
+      });
+
+    // get the totalBetting amount # Done
+    // find the winners array # Done
+    // find the winners and how much they each bet
+    // Give them the money they bet back
+    // Give them a winning bonus
+    // updated user's balances
+    // send update the bet document (results, settled etc)
+  }
+
   async executeBetTransaction(
     user: User,
     bet: Bet,
     amount: number,
     option: number,
-    choiceName: string,
+    choiceName: string
   ) {
     let betData;
+    let totalBettingAmount: number = bet.state.totalBettingAmount;
+    let optionOneSupportersAmount = bet.state.optionOne.supportersAmount;
+    let optionTwoSupportersAmount = bet.state.optionTwo.supportersAmount;
+
     const alreadyExistingBets = bet.state.optionOne.supporters; // needs refresh to work
     if (user.balance < amount) {
       console.log('not enough money');
@@ -69,16 +187,18 @@ export class BetService {
         return;
       }
     }
-
+    console.log(totalBettingAmount, amount);
     if (option === 1) {
       betData = {
         state: {
           numberOfParticipants: (bet.state.numberOfParticipants += 1),
+          totalBettingAmount: totalBettingAmount + amount,
           optionOne: {
             supporters: [
               ...alreadyExistingBets,
               { userId: user.id, amount: amount, choice: option },
             ],
+            supportersAmount: (optionOneSupportersAmount += 1),
           },
         },
       };
@@ -86,11 +206,14 @@ export class BetService {
       betData = {
         state: {
           numberOfParticipants: (bet.state.numberOfParticipants += 1),
+          totalBettingAmount: (totalBettingAmount =
+            totalBettingAmount + amount),
           optionTwo: {
             supporters: [
               ...alreadyExistingBets,
               { userId: user.id, amount: amount, choice: option },
             ],
+            supportersAmount: (optionTwoSupportersAmount += 1),
           },
         },
       };
@@ -100,7 +223,12 @@ export class BetService {
       balance: user.balance - amount,
       activeBets: [
         ...user.activeBets,
-        { betId: bet.id, amount: amount, choice: option, choiceName: choiceName },
+        {
+          betId: bet.id,
+          amount: amount,
+          choice: option,
+          choiceName: choiceName,
+        },
       ],
     };
     this.afs.collection('bets').doc(bet.id).set(betData, { merge: true });
