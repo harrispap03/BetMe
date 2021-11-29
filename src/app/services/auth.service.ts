@@ -75,7 +75,7 @@ export class AuthService {
       email: user.email,
       photoURL: user.photoURL,
       createdAt: user.metadata.createdAt,
-      balance: 0,
+      balance: 1000,
       activeBets: [],
       pastBets: [],
       canHostGames: true,
