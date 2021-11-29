@@ -16,6 +16,10 @@ const routes: Routes = [
   },  {
     path: 'confirm-bet',
     loadChildren: () => import('./components/confirm-bet/confirm-bet.module').then( m => m.ConfirmBetPageModule)
+  },
+  {
+    path: 'settle-bet',
+    loadChildren: () => import('./components/settle-bet/settle-bet.module').then( m => m.SettleBetPageModule)
   }
 
 ];

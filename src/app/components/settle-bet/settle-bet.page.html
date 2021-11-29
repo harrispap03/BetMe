@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>settle-bet</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button (click)="dismiss()">Cancel</ion-button>
+  <div>
+    <h3>Who won ?</h3>
+    <ion-button (click)="getChoice(1)">{{bet.optionOneName}}</ion-button>
+    <ion-button (click)="getChoice(2)"> {{bet.optionTwoName}} </ion-button>
+  </div>
+</ion-content>

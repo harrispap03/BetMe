@@ -4,8 +4,10 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
+import { SettleBetPage } from 'src/app/components/settle-bet/settle-bet.page';
 import { AuthService } from 'src/app/services/auth.service';
 import { BetService } from 'src/app/services/bet.service';
 import { Bet } from 'src/models/bet';
@@ -24,7 +26,8 @@ export class BetsPage {
 
   constructor(
     private authService: AuthService,
-    private betService: BetService
+    private betService: BetService,
+    public modalController: ModalController
   ) {
     this.authService.user$.pipe(take(1)).subscribe((user: User) => {
       this.userActiveBets = user.activeBets;
@@ -42,7 +45,6 @@ export class BetsPage {
       bet, // keep the bet
       userBet: this.userActiveBets.find(({ betId }) => bet.id === betId),
     }));
-    console.log('prepy', this.preparedBets);
   }
 
   test() {
@@ -56,7 +58,21 @@ export class BetsPage {
     this.inParticipatingSegment = !this.inParticipatingSegment;
   }
 
-  // get current User bet ids
-  // use the bet ids to get the bets
-  // display the bets
+  async onSettleBet(bet) {
+    const modal = await this.modalController.create({
+      component: SettleBetPage,
+      componentProps: {
+        bet,
+      },
+    });
+    modal.onDidDismiss().then((data) => {
+      if (data.data.winner) {
+        this.betService.settleBet(data.data.winner, bet.id);
+      } else {
+        console.log('winners undefined');
+        return;
+      }
+    });
+    return await modal.present();
+  }
 }
