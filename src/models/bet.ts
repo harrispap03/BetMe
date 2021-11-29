@@ -11,6 +11,7 @@ export interface Bet {
   state: BetState;
 }
 export interface BetState {
+  totalBettingAmount: number;
   numberOfParticipants: number;
   optionOne: InFavorBet;
   optionTwo: AgainstBet;
