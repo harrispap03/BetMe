@@ -145,7 +145,7 @@ export class BetService {
           });
 
         this.afs
-          .collection('bet')
+          .collection('bets')
           .doc(betId)
           .set({ settled: true, winningOption: betWinner }, { merge: true });
       });
