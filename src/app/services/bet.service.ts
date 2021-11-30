@@ -159,7 +159,7 @@ export class BetService {
               .set({ balance: appBalance + appPayout }, { merge: true });
           });
 
-        // this.afs.collection('bet').doc(betId).set({settled:true, results:}, {merge: true});
+        this.afs.collection('bet').doc(betId).set({settled:true, winningOption: betWinner}, {merge: true});
       });
   }
 
