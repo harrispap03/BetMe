@@ -144,10 +144,20 @@ export class BetService {
 
         let appPayout = this.totalBettingAmount * 0.3;
         console.log('app', appPayout);
+        let appBalance;
         this.afs
           .collection('app')
           .doc('appProfit')
-          .set({ balance: appPayout }, { merge: true });
+          .valueChanges()
+          .pipe(take(1))
+          .subscribe((appDoc: any) => {
+            console.log(appDoc);
+            appBalance = appDoc.balance;
+            this.afs
+              .collection('app')
+              .doc('appProfit')
+              .set({ balance: appBalance + appPayout }, { merge: true });
+          });
 
         // this.afs.collection('bet').doc(betId).set({settled:true, results:}, {merge: true});
       });
