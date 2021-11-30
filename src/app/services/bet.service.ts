@@ -9,8 +9,6 @@ import { scan, take, tap } from 'rxjs/operators';
 import { Bet } from 'src/models/bet';
 import { QueryConfig } from 'src/models/QueryConfig';
 import { User } from 'src/models/user';
-import firestore from 'firebase/compat/app';
-import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -54,7 +52,6 @@ export class BetService {
   optionOneSupporters;
   optionTwoSupporters;
   settleBet(betWinner, betId) {
-    let bet;
     let winners;
     let bonusEarnings = 0;
     // get bet with id
@@ -83,26 +80,18 @@ export class BetService {
           this.totalBettingAmount =
             this.totalBettingAmount - moneyBackForCurrentWinner;
         }
-        console.log('money back array', winnerMoneyBack);
-        console.log('total betting amount', this.totalBettingAmount);
-
         // figure out their bonus payout
 
         // Ιf there was none on the other side, there wont be a bonus
         if (this.totalBettingAmount === 0) {
           for (let winner of winners) {
-            console.log('nothing more to give out: ', this.totalBettingAmount);
-            console.log('They put in: ', winner.amount);
             winnerEarnings.push(0);
           }
         } else if (this.totalBettingAmount !== 0) {
           for (let winner of winners) {
-            console.log('They put in: ', winner.amount);
             bonusEarnings = (winner.amount / initialBettingAmount) * 100;
             this.totalBettingAmount = this.totalBettingAmount - bonusEarnings;
             winnerEarnings.push(bonusEarnings);
-            console.log('bonus earnings are: ', bonusEarnings);
-            console.log('total betting amount', this.totalBettingAmount);
           }
         } else {
           console.log('Major problem!!!');
@@ -132,8 +121,6 @@ export class BetService {
                     { balance: userBalance + winnerTotalEarnings[i] },
                     { merge: true }
                   );
-                console.log('winner balance right now: ', winner.userId, user);
-                console.log('winner gets', winnerTotalEarnings[i]);
               });
           }
         }
@@ -143,7 +130,6 @@ export class BetService {
         }, 1000);
 
         let appPayout = this.totalBettingAmount * 0.3;
-        console.log('app', appPayout);
         let appBalance;
         this.afs
           .collection('app')
@@ -151,7 +137,6 @@ export class BetService {
           .valueChanges()
           .pipe(take(1))
           .subscribe((appDoc: any) => {
-            console.log(appDoc);
             appBalance = appDoc.balance;
             this.afs
               .collection('app')
@@ -159,16 +144,16 @@ export class BetService {
               .set({ balance: appBalance + appPayout }, { merge: true });
           });
 
-        this.afs.collection('bet').doc(betId).set({settled:true, winningOption: betWinner}, {merge: true});
+        this.afs
+          .collection('bet')
+          .doc(betId)
+          .set({ settled: true, winningOption: betWinner }, { merge: true });
       });
   }
 
   payHost(bet) {
-    console.log('remaining', this.totalBettingAmount);
-    console.log('bet is', bet.creatorId);
     //pay the host and the app
     let hostPayout = this.totalBettingAmount * 0.7;
-    console.log('host', hostPayout);
     this.afs
       .collection('users')
       .doc(bet.creatorId)
