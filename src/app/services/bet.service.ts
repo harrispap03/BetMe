@@ -64,6 +64,7 @@ export class BetService {
       .valueChanges()
       .pipe(take(1))
       .subscribe((bet: any) => {
+        const initialBettingAmount = bet.state.totalBettingAmount;
         this.totalBettingAmount = bet.state.totalBettingAmount;
         //figure out the winners
         if (betWinner === 1) {
@@ -97,7 +98,7 @@ export class BetService {
         } else if (this.totalBettingAmount !== 0) {
           for (let winner of winners) {
             console.log('They put in: ', winner.amount);
-            bonusEarnings = (winner.amount / this.totalBettingAmount) * 100;
+            bonusEarnings = (winner.amount / initialBettingAmount) * 100;
             this.totalBettingAmount = this.totalBettingAmount - bonusEarnings;
             winnerEarnings.push(bonusEarnings);
             console.log('bonus earnings are: ', bonusEarnings);
@@ -113,6 +114,7 @@ export class BetService {
             winnerTotalEarnings.push(winnerMoneyBack[i] + winnerEarnings[j]);
           }
         }
+
         //pay the winners
         for (let winner of winners) {
           for (let i = 0; i < 1; i++) {
@@ -122,11 +124,12 @@ export class BetService {
               .valueChanges()
               .pipe(take(1))
               .subscribe((user: any) => {
+                let userBalance = user.balance;
                 this.afs
                   .collection('users')
                   .doc(winner.userId)
                   .set(
-                    { balance: user.balance + winnerTotalEarnings[i] },
+                    { balance: userBalance + winnerTotalEarnings[i] },
                     { merge: true }
                   );
                 console.log('winner balance right now: ', winner.userId, user);
@@ -135,32 +138,39 @@ export class BetService {
           }
         }
 
-        console.log('remaining', this.totalBettingAmount);
-        //pay the host and the app
-        let hostPayout = this.totalBettingAmount * 0.7;
+        setTimeout(() => {
+          this.payHost(bet);
+        }, 1000);
+
         let appPayout = this.totalBettingAmount * 0.3;
-        console.log('host', hostPayout);
         console.log('app', appPayout);
         this.afs
-          .collection('users')
-          .doc(bet.creatorId)
-          .set({ balance: hostPayout }, { merge: true });
-
-        this.afs
           .collection('app')
-          .doc()
+          .doc('appProfit')
           .set({ balance: appPayout }, { merge: true });
 
         // this.afs.collection('bet').doc(betId).set({settled:true, results:}, {merge: true});
       });
+  }
 
-    // get the totalBetting amount # Done
-    // find the winners array # Done
-    // find the winners and how much they each bet
-    // Give them the money they bet back
-    // Give them a winning bonus
-    // updated user's balances
-    // send update the bet document (results, settled etc)
+  payHost(bet) {
+    console.log('remaining', this.totalBettingAmount);
+    console.log('bet is', bet.creatorId);
+    //pay the host and the app
+    let hostPayout = this.totalBettingAmount * 0.7;
+    console.log('host', hostPayout);
+    this.afs
+      .collection('users')
+      .doc(bet.creatorId)
+      .valueChanges()
+      .pipe(take(1))
+      .subscribe((user: any) => {
+        let currentHostBalance = user.balance;
+        this.afs
+          .collection('users')
+          .doc(bet.creatorId)
+          .set({ balance: currentHostBalance + hostPayout }, { merge: true });
+      });
   }
 
   async executeBetTransaction(

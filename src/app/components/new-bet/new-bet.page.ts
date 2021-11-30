@@ -47,12 +47,7 @@ export class NewBetPage implements OnInit {
         },
         optionTwo: {
           supportersAmount: 0,
-          supporters: {
-            betMade: {
-              userId: '',
-              amount: 0,
-            },
-          },
+          supporters: [],
         },
       },
     });
