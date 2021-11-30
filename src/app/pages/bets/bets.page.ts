@@ -4,6 +4,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
@@ -23,21 +24,25 @@ export class BetsPage {
   betsUserParticipatesIn = [];
   userActiveBets;
   preparedBets;
-
+  user;
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private betService: BetService,
-    public modalController: ModalController
+    public modalController: ModalController,
+    private router: Router
   ) {
-    this.authService.user$.pipe(take(1)).subscribe((user: User) => {
-      this.userActiveBets = user.activeBets;
-      this.betsUserParticipatesIn = this.betService.getBetsUserParticipatesIn(
-        user.activeBets
-      );
-      this.betService.getBetsCreatedByUser(user.id).subscribe((val) => {
-        this.betsCreatedByUser = val;
-        this.fillIn();
-      });
+    this.authService.user$.subscribe((user: User) => {
+      this.user = user;
+      if (user) {
+        this.userActiveBets = user.activeBets;
+        this.betsUserParticipatesIn = this.betService.getBetsUserParticipatesIn(
+          user.activeBets
+        );
+        this.betService.getBetsCreatedByUser(user.id).subscribe((val) => {
+          this.betsCreatedByUser = val;
+          this.fillIn();
+        });
+      }
     });
   }
   fillIn() {
@@ -74,5 +79,9 @@ export class BetsPage {
       }
     });
     return await modal.present();
+  }
+
+  navigateToUserProfile() {
+    this.router.navigate(['user-profile']);
   }
 }

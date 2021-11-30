@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content *ngIf="user">
   <ion-button (click)="test()">Log</ion-button>
   <h3>Your bets</h3>
   <ion-segment (ionChange)="segmentChanged($event)" value="participating">
@@ -50,5 +50,14 @@
         </ion-card>
       </div>
     </div>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="!user">
+  <div class="center">
+    You need to be logged in to use this feature
+    <br />
+    <br />
+    <ion-button (click)="navigateToUserProfile()">Go to login</ion-button>
   </div>
 </ion-content>
