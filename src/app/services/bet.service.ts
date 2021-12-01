@@ -27,7 +27,7 @@ export class BetService {
 
   getBetsCreatedByUser(userId) {
     let betsCreatedByUser = this.afs
-      .collection('bets', (ref) => ref.where('creatorId', '==', userId))
+      .collection('bets', (ref) => ref.where('creatorId', '==', userId).orderBy('createdAt', 'desc'))
       .valueChanges();
     return betsCreatedByUser;
   }
