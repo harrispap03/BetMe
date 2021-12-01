@@ -2,6 +2,22 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 95%;
+  height: 85vh;
   justify-content: center;
+}
+h3 {
+  text-align: center;
+}
+
+ion-card-content{
+  text-align: center;
+}
+
+.description{
+  padding-bottom: 1.5em;
+}
+
+ion-card-header{
+  display: flex;
+  justify-content: space-between;
 }

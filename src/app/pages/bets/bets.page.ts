@@ -1,9 +1,4 @@
-import {
-  AfterViewChecked,
-  AfterViewInit,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { of } from 'rxjs';
@@ -52,13 +47,6 @@ export class BetsPage {
     }));
   }
 
-  test() {
-    this.fillIn();
-    console.log('betsUserParticipatesIn', this.betsUserParticipatesIn);
-    console.log('createdByUser', this.betsCreatedByUser);
-    console.log(this.userActiveBets);
-  }
-
   segmentChanged(event) {
     this.inParticipatingSegment = !this.inParticipatingSegment;
   }
@@ -83,5 +71,9 @@ export class BetsPage {
 
   navigateToUserProfile() {
     this.router.navigate(['user-profile']);
+  }
+
+  navigateToMainFeed() {
+    this.router.navigate(['home']);
   }
 }

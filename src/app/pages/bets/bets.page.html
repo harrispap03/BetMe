@@ -1,6 +1,4 @@
 <ion-content *ngIf="user">
-  <ion-button (click)="test()">Log</ion-button>
-  <h3>Your bets</h3>
   <ion-segment (ionChange)="segmentChanged($event)" value="participating">
     <ion-segment-button value="participating">
       <ion-label>Participating</ion-label>
@@ -11,9 +9,12 @@
   </ion-segment>
 
   <div *ngIf="inParticipatingSegment">
-    <h3>Participating in this that and whatever</h3>
+    <div class="center" *ngIf="userActiveBets.length === 0">
+      <h3>You're currently not participating in any bets</h3>
+      <ion-button (click)="navigateToMainFeed()">Find bets</ion-button>
+    </div>
     <div *ngFor="let preparedBet of preparedBets">
-      <ion-card>
+      <ion-card *ngIf="!preparedBet.bet.settled">
         <ion-card-header>
           <ion-chip>
             <ion-avatar>
@@ -21,10 +22,13 @@
             </ion-avatar>
             <ion-label>{{preparedBet.bet.creator}}</ion-label>
           </ion-chip>
+          <p>{{preparedBet.bet.createdAt.toDate() | date:'short' }}</p>
         </ion-card-header>
         <ion-card-content>
           {{preparedBet.bet.description}}
-          <h3>You bet on:</h3>
+          <br>
+          <br>
+          <h2>You bet {{ preparedBet.userBet.amount }} on:</h2>
           <ion-button>{{preparedBet.userBet.choiceName}} </ion-button>
         </ion-card-content>
       </ion-card>
@@ -32,9 +36,13 @@
   </div>
 
   <div *ngIf="!inParticipatingSegment">
+    <div class="center" *ngIf="betsCreatedByUser.length === 0">
+      <h3>There are no active bets you've created</h3>
+      <ion-button (click)="navigateToMainFeed()">Go create some</ion-button>
+    </div>
     <div *ngIf="betsCreatedByUser">
       <div *ngFor="let bet of betsCreatedByUser">
-        <ion-card>
+        <ion-card *ngIf="!bet.settled">
           <ion-card-header>
             <ion-chip>
               <ion-avatar>
@@ -42,9 +50,10 @@
               </ion-avatar>
               <ion-label>{{bet.creator}}</ion-label>
             </ion-chip>
+            <p>{{bet.createdAt.toDate() | date:'short' }}</p>
           </ion-card-header>
           <ion-card-content>
-            {{bet.description}}
+            <div class="description"><h3>{{bet.description}}</h3></div>
             <ion-button (click)="onSettleBet(bet)">Settle Bet</ion-button>
           </ion-card-content>
         </ion-card>
