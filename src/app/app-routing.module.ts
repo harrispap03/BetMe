@@ -20,6 +20,10 @@ const routes: Routes = [
   {
     path: 'settle-bet',
     loadChildren: () => import('./components/settle-bet/settle-bet.module').then( m => m.SettleBetPageModule)
+  },
+  {
+    path: 'bets-archive',
+    loadChildren: () => import('./pages/bets-archive/bets-archive.module').then( m => m.BetsArchivePageModule)
   }
 
 ];

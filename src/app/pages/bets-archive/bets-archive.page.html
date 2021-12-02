@@ -1,7 +1,7 @@
-<ion-content *ngIf="user">
-  <ion-segment (ionChange)="segmentChanged($event)" value="participating">
+<ion-content>
+  <ion-segment (ionChange)="segmentChanged()" value="participating">
     <ion-segment-button value="participating">
-      <ion-label>Participating</ion-label>
+      <ion-label>Participated</ion-label>
     </ion-segment-button>
     <ion-segment-button value="created">
       <ion-label>Created</ion-label>
@@ -9,12 +9,12 @@
   </ion-segment>
 
   <div *ngIf="inParticipatingSegment">
-    <div class="center" *ngIf="userActiveBets.length === 0">
+    <div class="center" *ngIf="!userActiveBets">
       <h3>You're currently not participating in any bets</h3>
       <ion-button (click)="navigateToMainFeed()">Find bets</ion-button>
     </div>
     <div *ngFor="let preparedBet of preparedBets">
-      <ion-card *ngIf="!preparedBet.bet.settled">
+      <ion-card *ngIf="preparedBet.bet.settled">
         <ion-card-header>
           <ion-chip>
             <ion-avatar>
@@ -28,10 +28,11 @@
           {{preparedBet.bet.description}}
           <br />
           <br />
-          <!-- bet status component passing amount and choice Name -->
+          <!-- bet status component passing in amount, choiceName and winning option -->
           <app-bet-status
-            [displayOption]="'amountChoice'"
-            [bet]="preparedBet.userBet"
+            [bet]="preparedBet"
+            [winningOption]="preparedBet.bet.winningOption"
+            [displayOption]="'amountChoiceAndOutcome'"
           ></app-bet-status>
         </ion-card-content>
       </ion-card>
@@ -45,7 +46,7 @@
     </div>
     <div *ngIf="betsCreatedByUser">
       <div *ngFor="let bet of betsCreatedByUser">
-        <ion-card *ngIf="!bet.settled">
+        <ion-card *ngIf="bet.settled">
           <ion-card-header>
             <ion-chip>
               <ion-avatar>
@@ -57,7 +58,11 @@
           </ion-card-header>
           <ion-card-content>
             <div class="description"><h3>{{bet.description}}</h3></div>
-            <ion-button (click)="onSettleBet(bet)">Settle Bet</ion-button>
+            <!-- bet status component passing the winning option -->
+            <app-bet-status
+              [displayOption]="'outcome'"
+              [bet]="bet"
+            ></app-bet-status>
           </ion-card-content>
         </ion-card>
       </div>

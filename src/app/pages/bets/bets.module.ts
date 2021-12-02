@@ -5,9 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { BetsPage } from './bets.page';
 
 import { BetsPageRoutingModule } from './bets-routing.module';
+import { BetStatusModule } from 'src/app/components/bet-status/bet-status.module';
 
 @NgModule({
-  imports: [IonicModule, CommonModule, FormsModule, BetsPageRoutingModule],
+  imports: [IonicModule, CommonModule, FormsModule, BetsPageRoutingModule, BetStatusModule],
   declarations: [BetsPage],
 })
 export class BetsPageModule {}

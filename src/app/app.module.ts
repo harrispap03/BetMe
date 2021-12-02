@@ -13,6 +13,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { environment } from 'src/environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BetStatusModule } from './components/bet-status/bet-status.module';
 
 @NgModule({
   declarations: [AppComponent],
