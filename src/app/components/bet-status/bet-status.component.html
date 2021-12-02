@@ -16,5 +16,6 @@
 </div>
 
 <div *ngIf="displayOption === 'amountChoice'">
-  <p>You bet {{ bet.amount }} on {{ bet.choiceName }}</p>
+  You bet ${{ bet.userBet.amount }} on
+  <ion-button>{{ bet.userBet.choiceName }}</ion-button>
 </div>
