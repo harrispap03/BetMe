@@ -24,6 +24,15 @@ export class HomePage implements OnInit {
       prepend: false,
     });
   }
+
+  onRefresh(event) {
+    this.betService.init('bets', 'createdAt', {
+      reverse: true,
+      prepend: false,
+    });
+    event.target.complete();
+  }
+
   async addNewBetPopup() {
     const modal = await this.modalController.create({
       component: NewBetPage,
@@ -37,7 +46,7 @@ export class HomePage implements OnInit {
       componentProps: {
         selectedBet,
         betChoice,
-        option
+        option,
       },
     });
     return await modal.present();

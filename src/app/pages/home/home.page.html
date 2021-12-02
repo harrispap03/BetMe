@@ -1,8 +1,9 @@
 <ion-content>
-  <ion-button (click)="addNewBetPopup()">Add new bet</ion-button>
-  <ion-button (click)="toggleInfiniteScroll()" expand="block">
-    Toggle Infinite Scroll
-  </ion-button>
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- <ion-button expland="full" (click)="addNewBetPopup()">Add new bet</ion-button> -->
 
   <ion-list *ngFor="let bet of betService.data | async">
     <ion-card>
