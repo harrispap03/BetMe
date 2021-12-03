@@ -9,15 +9,20 @@ h3 {
   text-align: center;
 }
 
-ion-card-content{
+ion-card-content {
   text-align: center;
 }
 
-.description{
+.description {
   padding-bottom: 1.5em;
 }
 
-ion-card-header{
+ion-card-header {
   display: flex;
   justify-content: space-between;
+}
+
+ion-card {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
 }

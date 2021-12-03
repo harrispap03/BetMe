@@ -21,3 +21,8 @@ ion-card-header {
   display: flex;
   justify-content: space-between;
 }
+
+ion-card {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
