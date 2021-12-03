@@ -1,29 +1,30 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>new-bet</ion-title>
-  </ion-toolbar>
+  <!-- Title needs more margin and to be inline with the button on android-->
+  <ion-title class="ion-align-items-center">New Bet</ion-title>
+  <ion-button fill="clear" (click)="cancel()">Cancel</ion-button>
 </ion-header>
 
 <ion-content>
-  <ion-button (click)="cancel()">Cancel</ion-button>
-
   <ion-card>
     <ion-card-content>
       <form [formGroup]="myForm">
-        <ion-item>
-          <ion-label position="floating">Bet Description</ion-label>
-          <ion-textarea formControlName="description"></ion-textarea>
-        </ion-item>
+        <!-- <ion-label position="floating">Bet Description</ion-label> -->
+        <ion-textarea
+          formControlName="description"
+          placeholder="BetDescription"
+        ></ion-textarea>
         <ion-input
           formControlName="optionOneName"
-          placeholder="in Favor"
+          placeholder="Option 1"
         ></ion-input>
         <ion-input
           formControlName="optionTwoName"
-          placeholder="Against"
+          placeholder="Option 2"
         ></ion-input>
       </form>
     </ion-card-content>
-    <ion-button (click)="submitHandler()">Submit</ion-button>
   </ion-card>
+  <div class="center">
+    <ion-button (click)="submitHandler()">Submit</ion-button>
+  </div>
 </ion-content>

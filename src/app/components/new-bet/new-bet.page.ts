@@ -58,8 +58,6 @@ export class NewBetPage implements OnInit {
   }
 
   async submitHandler() {
-    const betDocumentRef = this.afs.collection('bets').doc();
-
     this.loading = true;
 
     this.myForm.patchValue({
@@ -98,5 +96,6 @@ export class NewBetPage implements OnInit {
     }
 
     this.loading = false;
+    this.cancel();
   }
 }
