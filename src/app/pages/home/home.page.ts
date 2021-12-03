@@ -33,13 +33,6 @@ export class HomePage implements OnInit {
     event.target.complete();
   }
 
-  async addNewBetPopup() {
-    const modal = await this.modalController.create({
-      component: NewBetPage,
-    });
-    return await modal.present();
-  }
-
   async onBetChoiceMade(selectedBet: Bet, betChoice: any, option: number) {
     const modal = await this.modalController.create({
       component: ConfirmBetPage,

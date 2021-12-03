@@ -4,8 +4,6 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <!-- <ion-button expland="full" (click)="addNewBetPopup()">Add new bet</ion-button> -->
-
   <ion-card *ngFor="let bet of betService.data | async">
     <ion-card-header>
       <ion-chip>

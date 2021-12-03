@@ -8,6 +8,13 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
+        path: 'confirmBetPage',
+        loadChildren: () =>
+          import('../components/confirm-bet/confirm-bet.module').then(
+            (m) => m.ConfirmBetPageModule
+          ),
+      },
+      {
         path: 'bets-archive',
         loadChildren: () =>
           import('../pages/bets-archive/bets-archive.module').then(
