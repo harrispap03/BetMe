@@ -1,9 +1,17 @@
 <app-header></app-header>
 <ion-content>
-  <div class="center" *ngIf="auth.user$ | async as user">
-    <h3>Logged in as {{ user.displayName }}</h3>
-    <img [src]="user.photoURL" />
-    <ion-button (click)="auth.signOut()">Log out</ion-button>
+  <div class="container" *ngIf="auth.user$ | async as user">
+    <h3>Welcome {{ user.displayName }}</h3>
+    <div class="info">
+      <ion-avatar>
+        <img [src]="user.photoURL" />
+      </ion-avatar>
+      <p>Balance: ${{ userBalance }}</p>
+      <ion-button (click)="addBalancePopup()"> <ion-icon name="wallet"></ion-icon></ion-button>
+    </div>
+    <div class="logout">
+      <ion-button class="logout" (click)="auth.signOut()">Log out</ion-button>
+    </div>
   </div>
 
   <div

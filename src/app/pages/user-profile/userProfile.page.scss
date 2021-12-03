@@ -1,7 +1,27 @@
 .center {
   align-items: center;
+  text-align: center;
+}
+
+h3 {
+  text-align: center;
+}
+
+.info {
+  padding-top: 8em;
+  padding-bottom: 5em;
+  padding-left: 1em;
+  padding-right: 1em;
   display: flex;
-  flex-direction: column;
-  height: 95%;
-  justify-content: center;
+  justify-content: space-between;
+  vertical-align: text-bottom;
+}
+
+.balance {
+  display: flex;
+}
+
+.logout {
+  text-align: center;
+  align-items: center;
 }

@@ -50,13 +50,13 @@ export class AuthService {
     }
   }
 
-  updtateUserData(userId: string, data: any){
+  updtateUserData(userId: string, data: any) {
     console.log(userId);
-    this.afs.doc(`users/${userId}`).set(data, {merge: true});
+    this.afs.doc(`users/${userId}`).set(data, { merge: true });
   }
 
-  updateBetData(betId: string, data: any){
-    this.afs.doc(`bets/${betId}`).set(data, {merge: true});
+  updateBetData(betId: string, data: any) {
+    this.afs.doc(`bets/${betId}`).set(data, { merge: true });
   }
   async signOut() {
     await this.afAuth.signOut();
