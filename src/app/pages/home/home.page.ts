@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { IonInfiniteScroll, ModalController } from '@ionic/angular';
 import { ConfirmBetPage } from 'src/app/components/confirm-bet/confirm-bet.page';
 import { NewBetPage } from 'src/app/components/new-bet/new-bet.page';

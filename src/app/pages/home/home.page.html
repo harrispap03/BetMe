@@ -1,3 +1,4 @@
+<app-header></app-header>
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -5,29 +6,27 @@
 
   <!-- <ion-button expland="full" (click)="addNewBetPopup()">Add new bet</ion-button> -->
 
-  <ion-list *ngFor="let bet of betService.data | async">
-    <ion-card>
-      <ion-card-header>
-        <ion-chip>
-          <ion-avatar>
-            <img [src]="bet.creatorProfilePicURL" />
-          </ion-avatar>
-          <ion-label>{{bet.creator}}</ion-label>
-        </ion-chip>
-      </ion-card-header>
-      <ion-card-content>
-        {{bet.description}}
-        <div class="buttons">
-          <ion-button (click)="onBetChoiceMade(bet, bet.optionOneName, 1)">
-            {{bet.optionOneName}}
-          </ion-button>
-          <ion-button (click)="onBetChoiceMade(bet, bet.optionTwoName, 2)">
-            {{bet.optionTwoName}}
-          </ion-button>
-        </div>
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
+  <ion-card *ngFor="let bet of betService.data | async">
+    <ion-card-header>
+      <ion-chip>
+        <ion-avatar>
+          <img [src]="bet.creatorProfilePicURL" />
+        </ion-avatar>
+        <ion-label>{{bet.creator}}</ion-label>
+      </ion-chip>
+    </ion-card-header>
+    <ion-card-content>
+      {{bet.description}}
+      <div class="buttons">
+        <ion-button (click)="onBetChoiceMade(bet, bet.optionOneName, 1)">
+          {{bet.optionOneName}}
+        </ion-button>
+        <ion-button (click)="onBetChoiceMade(bet, bet.optionTwoName, 2)">
+          {{bet.optionTwoName}}
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content

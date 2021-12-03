@@ -8,6 +8,8 @@ import { BetsArchivePageRoutingModule } from './bets-archive-routing.module';
 
 import { BetsArchivePage } from './bets-archive.page';
 import { BetStatusModule } from 'src/app/components/bet-status/bet-status.module';
+import { HeaderComponent } from 'src/app/components/header/header.component';
+import { HeaderModule } from 'src/app/components/header/header.module';
 
 @NgModule({
   imports: [
@@ -15,8 +17,9 @@ import { BetStatusModule } from 'src/app/components/bet-status/bet-status.module
     FormsModule,
     IonicModule,
     BetsArchivePageRoutingModule,
-    BetStatusModule
+    BetStatusModule,
+    HeaderModule,
   ],
-  declarations: [BetsArchivePage]
+  declarations: [BetsArchivePage],
 })
 export class BetsArchivePageModule {}

@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { UserProfilePage } from './userProfile.page';
 
 import { UserProfilePageRoutingModule } from './userProfile-routing.module';
+import { HeaderComponent } from 'src/app/components/header/header.component';
+import { HeaderModule } from 'src/app/components/header/header.module';
 
 @NgModule({
   imports: [
@@ -14,6 +16,7 @@ import { UserProfilePageRoutingModule } from './userProfile-routing.module';
     FormsModule,
     RouterModule.forChild([{ path: '', component: UserProfilePage }]),
     UserProfilePageRoutingModule,
+    HeaderModule,
   ],
   declarations: [UserProfilePage],
 })
