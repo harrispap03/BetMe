@@ -244,7 +244,7 @@ export class BetService {
     this.query = {
       path,
       field,
-      limit: 5,
+      limit: 4,
       reverse: false,
       prepend: false,
       ...opts,

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ActionSheetController } from '@ionic/angular';
+import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -17,7 +18,7 @@ export class UserProfilePage {
     public actionSheetController: ActionSheetController,
     public afs: AngularFirestore
   ) {
-    this.auth.user$.subscribe((user) => {
+    this.auth.user$.pipe(filter((user) => !!user)).subscribe((user) => {
       this.userBalance = user.balance;
       this.user = user;
     });
