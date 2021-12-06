@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import firebase from 'firebase/compat/app';
-import { merge } from 'rxjs';
+import { AlertController } from '@ionic/angular';
+import { present } from '@ionic/core/dist/types/utils/overlays';
 
 @Component({
   selector: 'app-new-bet',
@@ -12,12 +18,14 @@ import { merge } from 'rxjs';
   styleUrls: ['./new-bet.page.scss'],
 })
 export class NewBetPage implements OnInit {
+  alert;
   user;
   myForm: FormGroup;
   loading = false;
   success = false;
   constructor(
     private modalController: ModalController,
+    public alertController: AlertController,
     private fb: FormBuilder,
     private afs: AngularFirestore,
     private authService: AuthService
@@ -30,13 +38,13 @@ export class NewBetPage implements OnInit {
   ngOnInit() {
     this.myForm = this.fb.group({
       id: '',
-      description: '',
+      description: new FormControl('', Validators.required),
       creator: '',
       creatorId: '',
       creatorProfilePicURL: '',
       createdAt: '',
-      optionOneName: '',
-      optionTwoName: '',
+      optionOneName: new FormControl('', Validators.required),
+      optionTwoName: new FormControl('', Validators.required),
       settled: false,
       state: {
         numberOfParticipants: 0,
@@ -57,7 +65,20 @@ export class NewBetPage implements OnInit {
     this.modalController.dismiss();
   }
 
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Invalid Data',
+      subHeader: 'All fields are mandatory',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
   async submitHandler() {
+    if (this.myForm.invalid) {
+      this.presentAlert();
+      return;
+    }
     this.loading = true;
 
     this.myForm.patchValue({
