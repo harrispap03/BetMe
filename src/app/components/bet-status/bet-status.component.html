@@ -1,21 +1,16 @@
 <!-- That's done -->
 <div *ngIf="displayOption === 'amountChoiceAndOutcome'">
   <ion-grid>
-    <p>You bet ${{ bet.userBet.amount }}</p>
-    <p>on</p>
-    <ion-button>{{ bet.userBet.choiceName }}</ion-button>
-    <p>and</p>
-    <ion-button> {{ wonOrLost }} </ion-button>
+    <p>You bet ${{bet.userBet.amount}} on '{{ bet.userBet.choiceName }}'</p>
+    <p>and {{ wonOrLost }}</p>
   </ion-grid>
 </div>
 
 <div *ngIf="displayOption === 'outcome'">
-  <p>
-    <ion-button>{{ winningOptionName }}</ion-button> won
-  </p>
+  <p>'{{winningOptionName}}' won</p>
 </div>
 
 <div *ngIf="displayOption === 'amountChoice'">
-  You bet ${{ bet.userBet.amount }} on
-  <ion-button>{{ bet.userBet.choiceName }}</ion-button>
+  You bet ${{bet.userBet.amount}} on
+  <p>'{{bet.userBet.choiceName}}'</p>
 </div>
