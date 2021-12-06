@@ -18,7 +18,6 @@ import { present } from '@ionic/core/dist/types/utils/overlays';
   styleUrls: ['./new-bet.page.scss'],
 })
 export class NewBetPage implements OnInit {
-  alert;
   user;
   myForm: FormGroup;
   loading = false;

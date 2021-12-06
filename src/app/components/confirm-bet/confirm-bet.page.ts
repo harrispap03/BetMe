@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { BetService } from 'src/app/services/bet.service';
 import { Bet } from 'src/models/bet';
@@ -21,6 +21,7 @@ export class ConfirmBetPage implements OnInit {
 
   constructor(
     public modalController: ModalController,
+    public alertController: AlertController,
     public authService: AuthService,
     public betService: BetService
   ) {
@@ -35,8 +36,21 @@ export class ConfirmBetPage implements OnInit {
     this.modalController.dismiss();
   }
 
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Invalid Data',
+      subHeader: 'You have to enter the amount you want to bet',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
   async onConfirmBet() {
     const betAmount = +this.betAmountString;
+    if (isNaN(betAmount)) {
+      this.presentAlert();
+      return;
+    }
     this.betService.executeBetTransaction(
       this.user,
       this.selectedBet,
@@ -44,6 +58,6 @@ export class ConfirmBetPage implements OnInit {
       this.option,
       this.betChoice
     );
-    console.log('type is', typeof betAmount);
+    this.modalController.dismiss();
   }
 }
