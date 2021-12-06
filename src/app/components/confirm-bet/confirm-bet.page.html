@@ -15,12 +15,11 @@
       <p>You have to be logged in in order to participate in a bet</p>
     </ion-card-content>
     <ion-card-content *ngIf="user">
-      <h1>You're betting on:</h1>
-      <ion-button>{{betChoice}}</ion-button>
-      <ion-input [(ngModel)]="betAmountString" placeholder="Enter amount   "
-        >AMOUNT
-      </ion-input>
-      <ion-button (click)="onConfirmBet()">Confrim</ion-button>
+      <h1>You're betting on '{{betChoice}}'</h1>
+      <ion-input [(ngModel)]="betAmountString" placeholder="Enter the amount you want to bet"></ion-input>
+      <div class="center">
+        <ion-button (click)="onConfirmBet()">Confrim</ion-button>
+      </div>
     </ion-card-content>
   </ion-card>
 </ion-content>
