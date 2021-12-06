@@ -5,6 +5,6 @@
 </ion-header> -->
 
 <ion-content *ngIf="(auth.user$ | async) === (undefined || false || null)">
-  <ion-button (click)="takeAlook()">I just want to take a look</ion-button>
-  <ion-button (click)="signUp()">Get the full experience</ion-button>
+  <h3>Welcome to Bet Me</h3>
+  <ion-button (click)="signUp()">Sign up</ion-button>
 </ion-content>

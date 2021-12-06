@@ -7,7 +7,9 @@
         <img [src]="user.photoURL" />
       </ion-avatar>
       <p>Balance: ${{ userBalance }}</p>
-      <ion-button (click)="addBalancePopup()"> <ion-icon name="wallet"></ion-icon></ion-button>
+      <ion-button (click)="addBalancePopup()">
+        <ion-icon name="wallet"></ion-icon
+      ></ion-button>
     </div>
     <div class="logout">
       <ion-button class="logout" (click)="auth.signOut()">Log out</ion-button>
@@ -18,9 +20,6 @@
     class="center"
     *ngIf="(auth.user$ | async) === (undefined || false || null)"
   >
-    <ion-card-header
-      >You need to be logged in to use this feature</ion-card-header
-    >
     <ion-card-content>
       <ion-button (click)="auth.googleSignin()">Log in with Google</ion-button>
     </ion-card-content>

@@ -1,5 +1,5 @@
 <app-header></app-header>
-<ion-content>
+<ion-content *ngIf="user">
   <ion-segment (ionChange)="segmentChanged()" value="participating">
     <ion-segment-button value="participating">
       <ion-label>Participated</ion-label>
@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  <div *ngIf="!inParticipatingSegment">
+  <div *ngIf="!inParticipatingSegment && user">
     <div class="center" *ngIf="betsCreatedByUser.length === 0">
       <h3>There are no active bets you've created</h3>
       <ion-button (click)="navigateToMainFeed()">Go create some</ion-button>
