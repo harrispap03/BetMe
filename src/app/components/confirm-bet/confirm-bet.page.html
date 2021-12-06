@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-button (click)="cancel()">Cancel</ion-button>
-  </ion-toolbar>
+  <!-- Title needs more margin and to be inline with the button on android-->
+  <ion-title class="ion-align-items-center">New Bet</ion-title>
+  <ion-button fill="clear" (click)="cancel()">Cancel</ion-button>
 </ion-header>
 
 <ion-content>
@@ -11,7 +11,10 @@
         <img [src]="user.photoURL" />
       </ion-avatar>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content *ngIf="!user">
+      <p>You have to be logged in in order to participate in a bet</p>
+    </ion-card-content>
+    <ion-card-content *ngIf="user">
       <h1>You're betting on:</h1>
       <ion-button>{{betChoice}}</ion-button>
       <ion-input [(ngModel)]="betAmountString" placeholder="Enter amount   "
