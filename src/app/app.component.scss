@@ -1,0 +1,10 @@
+@media (min-width: 700px) {
+  ion-router-outlet {
+    width: 500px;
+    margin: auto;
+  }
+
+  .scroll-content {
+    overflow-y: auto;
+  }
+}
